@@ -383,6 +383,29 @@ int arch_misc_init(void)
 	/* checks and execute resset to factory event */
 	kw_sysrst_check();
 
+
+	do{
+		const unsigned int KW_REG_BOOT_ROM_ERROR_CODE = KW_REGISTER(0x100d0);
+		unsigned int err_reg   = readl(KW_REG_BOOT_ROM_ERROR_CODE);
+		unsigned int err_code  = (err_reg & 0xff);
+		unsigned int err_loc   = (err_reg & 0xf00)>>8;
+		unsigned int err_count = (err_reg & 0xff0000)>>16;
+
+#define KWB_CPU_LOCAL_NZ_FAIL(x) ( (x) ? "FAIL!" : "OK" )
+
+		printf("bootROM: Error Code register(addr 0x%x): 0x%x\n", KW_REG_BOOT_ROM_ERROR_CODE, err_reg);
+		printf("         Error Code:     0x%02x %s\n", err_code, KWB_CPU_LOCAL_NZ_FAIL(err_code));
+		printf("         Error Location: 0x%1x  %s\n", err_loc, KWB_CPU_LOCAL_NZ_FAIL(err_loc));
+		printf("         Retry Count:     %3u %s\n", err_count, KWB_CPU_LOCAL_NZ_FAIL(err_count));
+
+		if ( err_code || err_loc || err_count ){
+			if ( err_count == 8 ){
+				printf(" Count == 8 => It is very likely because ECC type mismatch in u-image.kwb Header\n");
+			}
+			printf("See Table 791: Boot ROM Routine and Error Code Register 0x100d0 for description\n");
+		}
+	}while(0);
+
 	return 0;
 }
 #endif /* CONFIG_ARCH_MISC_INIT */
