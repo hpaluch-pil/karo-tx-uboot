@@ -423,6 +423,15 @@ static int raw_access(nand_info_t *nand, ulong addr, loff_t off, ulong count,
 	return ret;
 }
 
+typedef	int (*my_correct_t)(struct mtd_info *mtd, uint8_t *dat, uint8_t *read_ecc,
+			uint8_t *calc_ecc);
+
+static int fake_nand_correct_data(struct mtd_info *mtd, u_char *dat,
+				      u_char *read_ecc, u_char *calc_ecc){
+	/* printf("OK called %s\n",__FUNCTION__); */
+	return 0;
+}
+
 int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 {
 	int i, ret = 0;
@@ -643,13 +652,22 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 		}
 
 		if (!s || !strcmp(s, ".jffs2") ||
-		    !strcmp(s, ".e") || !strcmp(s, ".i")) {
-			if (read)
+		    !strcmp(s, ".e") || !strcmp(s, ".i") || !strcmp(s, ".noecc")) {
+			if (read && s && !strcmp(s, ".noecc")){
+				struct nand_chip *nand2 = nand->priv;
+				my_correct_t old_correct = nand2->ecc.correct;
+				nand2->ecc.correct = fake_nand_correct_data;
 				ret = nand_read_skip_bad(nand, off, &rwsize,
 							 (u_char *)addr);
-			else
+				nand2->ecc.correct = old_correct;
+			} else if (read){
+				ret = nand_read_skip_bad(nand, off, &rwsize,
+							 (u_char *)addr);
+
+			} else {
 				ret = nand_write_skip_bad(nand, off, &rwsize,
 							  (u_char *)addr, 0);
+			}
 #ifdef CONFIG_CMD_NAND_TRIMFFS
 		} else if (!strcmp(s, ".trimffs")) {
 			if (read) {
