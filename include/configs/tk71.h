@@ -69,6 +69,9 @@
 #undef CONFIG_SYS_PROMPT
 #define CONFIG_SYS_PROMPT "TK71>> "
 
+/* enable TFTP PUT support - see net/tftp.c */
+#define CONFIG_CMD_TFTPPUT
+
 /*
  * NAND flash
  */
