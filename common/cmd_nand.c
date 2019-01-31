@@ -663,6 +663,8 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 				nand2->ecc.correct = old_correct;
 				printf("ECC stats: not available for read.nonecc because ECC errors are ignored in this mode\n");
 			} else if (read){
+				nand->ecc_stats.corrected = 0;
+			       	nand->ecc_stats.failed = 0;
 				ret = nand_read_skip_bad(nand, off, &rwsize,
 							 (u_char *)addr);
 
