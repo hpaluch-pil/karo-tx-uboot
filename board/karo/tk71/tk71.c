@@ -39,7 +39,7 @@ DECLARE_GLOBAL_DATA_PTR;
 
 int misc_init_r(void)
 {
-	setenv(U_BOOT_VERSION_KEY, U_BOOT_VERSION);
+	setenv(U_BOOT_VERSION_KEY, MY_ENV_UBOOT_VERSION);
 	return 0;
 }
 

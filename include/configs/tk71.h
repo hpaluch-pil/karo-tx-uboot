@@ -122,6 +122,8 @@
 
 /* key of injected U_BOOT_VERSION variable */
 #define U_BOOT_VERSION_KEY "u_boot_version"
+#define MY_ENV_UBOOT_VERSION U_BOOT_VERSION " (" U_BOOT_DATE " - " \
+	U_BOOT_TIME ")"
 /*
  * Default environment variables
  */
@@ -135,7 +137,7 @@
 	"mtdids=nand0=orion_nand\0" \
 	"mtdparts=mtdparts=orion_nand:"CONFIG_MTDPARTS"\0" \
 	"bootargs=console=ttyS0,115200 mtdparts=orion_nand:"CONFIG_MTDPARTS" rootfstype=jffs2 root=/dev/mtdblock3 rw\0" \
-	U_BOOT_VERSION_KEY "=" U_BOOT_VERSION "\0"
+	U_BOOT_VERSION_KEY "=" MY_ENV_UBOOT_VERSION "\0"
 #define MTDIDS_DEFAULT			"nand0=orion_nand"
 #define MTDPARTS_DEFAULT		"mtdparts=orion_nand:"CONFIG_MTDPARTS
 
