@@ -27,6 +27,8 @@
 #include <asm/arch/kirkwood.h>
 #include <asm/arch/mpp.h>
 #include <asm/io.h>
+/* for U_BOOT_VERSION */
+#include <version.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -34,6 +36,12 @@ DECLARE_GLOBAL_DATA_PTR;
 #define TK71_OE_HIGH			(~0)
 #define TK71_OE_VAL_LOW			(0)
 #define TK71_OE_VAL_HIGH		(0)
+
+int misc_init_r(void)
+{
+	setenv(U_BOOT_VERSION_KEY, U_BOOT_VERSION);
+	return 0;
+}
 
 int board_early_init_f(void)
 {

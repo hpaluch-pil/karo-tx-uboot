@@ -24,6 +24,9 @@
 #ifndef __CONFIG_TK71_H__
 #define __CONFIG_TK71_H__
 
+/* need U_BOOT_VERSION define */
+#include<version.h>
+
 /*
  * Version number information
  */
@@ -111,6 +114,11 @@
 #define CONFIG_ENV_ADDR			0x80000
 #define CONFIG_ENV_OFFSET		0x80000
 
+/* call tk71.c: int misc_init_r(void); to inject U_BOOT_VERSION into environment */
+#define CONFIG_MISC_INIT_R
+
+/* key of injected U_BOOT_VERSION variable */
+#define U_BOOT_VERSION_KEY "u_boot_version"
 /*
  * Default environment variables
  */
@@ -123,7 +131,8 @@
 	"update_all=run update_uboot; run update_kernel; run update_rootfs; reset\0" \
 	"mtdids=nand0=orion_nand\0" \
 	"mtdparts=mtdparts=orion_nand:"CONFIG_MTDPARTS"\0" \
-	"bootargs=console=ttyS0,115200 mtdparts=orion_nand:"CONFIG_MTDPARTS" rootfstype=jffs2 root=/dev/mtdblock3 rw\0"
+	"bootargs=console=ttyS0,115200 mtdparts=orion_nand:"CONFIG_MTDPARTS" rootfstype=jffs2 root=/dev/mtdblock3 rw\0" \
+	U_BOOT_VERSION_KEY "=" U_BOOT_VERSION "\0"
 #define MTDIDS_DEFAULT			"nand0=orion_nand"
 #define MTDPARTS_DEFAULT		"mtdparts=orion_nand:"CONFIG_MTDPARTS
 
