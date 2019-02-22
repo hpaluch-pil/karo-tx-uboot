@@ -40,6 +40,9 @@
 /u-boot.dtb
 /u-boot.sb
 
+# compiled binaries
+/tools/kwboot
+
 #
 # Generated files
 #
