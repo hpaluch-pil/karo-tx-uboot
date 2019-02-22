@@ -27,8 +27,6 @@
 #include <asm/arch/kirkwood.h>
 #include <asm/arch/mpp.h>
 #include <asm/io.h>
-/* for U_BOOT_VERSION */
-#include <version.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 

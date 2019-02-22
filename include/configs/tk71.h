@@ -122,6 +122,7 @@
 
 /* key of injected U_BOOT_VERSION variable */
 #define U_BOOT_VERSION_KEY "u_boot_version"
+/* we need U_BOOT_VERSION_STRING but without CONFIG_IDENT_STRING */
 #define MY_ENV_UBOOT_VERSION U_BOOT_VERSION " (" U_BOOT_DATE " - " \
 	U_BOOT_TIME ")"
 /*
